@@ -1,94 +1,355 @@
-# Desafio: Cadastro de Produtos
+# Project Guide - Products API
 
-**Atenção, Dev!**
+## Description
 
-Antes de "meter a mão na massa", leia com atenção todas as instruções abaixo.
+This project is a RESTful API developed in Laravel 10 for product management, with authentication via Laravel Sanctum. The project was developed as part of a fullstack challenge.
 
+## Technologies Used
 
-## Primeira Etapa - API (backend)
-1 - Configuração Inicial:
+### Backend
+- **Laravel 10**: Modern and robust PHP framework for web development
+- **Laravel Sanctum**: API token-based authentication system
+- **PHP 8.1+**: Programming language
+- **MySQL**: Relational database
+- **PHPUnit**: Unit testing framework
 
-- Crie um **fork** desse repositório.
-- Instale todas as dependências do projeto usando o Composer.
-- Crie um arquivo .env apropriado com base no arquivo .env.example fornecido e gere uma nova chave para a aplicação Laravel.
+### Why these technologies?
 
-2 - Modelo e Migração:
+- **Laravel**: Chosen for being the most popular and mature PHP framework, offering a robust structure, Eloquent ORM, intuitive routing system, and excellent documentation.
+- **Laravel Sanctum**: Native Laravel solution for API authentication, lightweight and efficient, ideal for SPAs and mobile applications.
+- **PHPUnit**: Standard framework for PHP testing, fully integrated with Laravel.
 
-- Crie um modelo e uma migração para uma entidade Product com os seguintes campos: id, name, description, price, quantity, active.
-- Execute a migração para criar a tabela correspondente no banco de dados.
-
-3 - Seeders e Factories:
-
-- Crie um seeder e uma factory para popular a tabela products com dados fictícios.
-- Execute o seeder para adicionar dados à tabela.
-
-4 - Rotas e Controladores:
-
-- Crie rotas RESTful para manipular recursos de produtos.
-- Crie um controlador ProductController com métodos para listar todos os produtos, exibir um único produto, criar um novo produto, atualizar um produto existente e excluir um produto.
-- Aplique as seguintes regras de validação no cadastro e atualização de um produto: name é obrigatório, price é obrigatório e deve ser maior que 0 (zero), quantity é obrigatória e deve ser um número inteiro.
-
-5 - Autenticação e Autorização:
-
-- Implemente autenticação de usuário.
-- Restrinja o acesso às rotas de criação, atualização e exclusão de produtos apenas para usuários autenticados.
-- Apenas usuários autenticados devem poder acessar as páginas de criação, edição e exclusão de produtos.
-
-6 - Testes Unitários:
-
-- Escreva testes unitários para pelo menos um método em seu controlador ProductController, testando o sucesso e as falhas destes.
-- Use o PHPUnit para escrever e executar os testes.
-
-O retorno da consulta a API deve ser realizado em formato JSON e seguindo a estrutura abaixo:
+## Project Structure
 
 ```
+challenge-fullstack/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── AuthController.php      # Authentication controller
+│   │   │   └── ProductController.php   # Products controller
+│   │   └── Middleware/                 # Custom middlewares
+│   └── Models/
+│       ├── Product.php                 # Product model
+│       └── User.php                    # User model
+├── database/
+│   ├── factories/
+│   │   ├── ProductFactory.php         # Factory for products
+│   │   └── UserFactory.php            # Factory for users
+│   ├── migrations/                     # Database migrations
+│   └── seeders/
+│       ├── DatabaseSeeder.php         # Main seeder
+│       └── ProductSeeder.php         # Products seeder
+├── routes/
+│   ├── api.php                        # API routes
+│   └── web.php                        # Web routes
+├── tests/
+│   └── Feature/
+│       └── ProductControllerTest.php  # Controller tests
+└── config/                            # Configuration files
+```
+
+## How to Run the Project
+
+### Prerequisites
+
+- PHP 8.1 or higher
+- **Composer** (required - see installation instructions if not installed)
+- MySQL 5.7+ or MariaDB 10.3+
+- Required PHP extensions: PDO, OpenSSL, Mbstring, Tokenizer, XML, Ctype, JSON, BCMath, pdo_mysql
+
+> **⚠️ IMPORTANT:** If you get an error about `vendor/autoload.php` not found, it means Composer is not installed. See installation instructions.
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd challenge-fullstack
+   ```
+
+2. **Install Composer (if you don't have it)**
+   
+   - **Windows:** Download and run the installer: https://getcomposer.org/download/
+   - **Linux/Mac:** Run: `curl -sS https://getcomposer.org/installer | php`
+   - Verify installation: `composer --version`
+
+3. **Install project dependencies**
+   ```bash
+   composer install
+   ```
+   
+   > If Composer is not in PATH, you can use: `php composer.phar install`
+
+4. **Configure the environment**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+5. **Configure the database**
+   
+   Edit the `.env` file and configure database credentials:
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=challenge_products
+   DB_USERNAME=your_username
+   DB_PASSWORD=your_password
+   ```
+
+6. **Create the database**
+   
+   In MySQL, create the database:
+   ```sql
+   CREATE DATABASE challenge_products;
+   ```
+
+7. **Run migrations**
+   ```bash
+   php artisan migrate
+   ```
+
+8. **Seed the database (optional)**
+   ```bash
+   php artisan db:seed
+   ```
+
+9. **Start the development server**
+   ```bash
+   php artisan serve
+   ```
+
+   The API will be available at: `http://localhost:8000`
+
+## API Endpoints
+
+### Authentication
+
+#### Register User
+```
+POST /api/register
+Content-Type: application/json
+
 {
-    id: 1,
-    name: 'Playstation 5',
-    description: 'Reproduza jogos do PS5 e do PS4 em Blu-ray Disc. Você também pode baixar jogos do PS5 e do PS4 digitais a partir da PlayStation Store.'
-    price: 3550, 
-    quantity: 100
-    active: true    
-},
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "password123",
+    "password_confirmation": "password123"
+}
 ```
 
-___
-## Segunda Etapa - SPA (frontend)
+**Response:**
+```json
+{
+    "message": "User registered successfully",
+    "user": {
+        "id": 1,
+        "name": "John Doe",
+        "email": "john@example.com"
+    },
+    "access_token": "1|token...",
+    "token_type": "Bearer"
+}
+```
 
-Para consumir os dados da API, você deverá criar uma SPA em ReactJS, pode ser isolado ou utilizando o Inertia no Laravel.
-Esta SPA deverá conter: 
-- Uma página para exibir todos os produtos cadastrados.
-- Uma página para exibir detalhes de um produto específico.
-- Uma página para criar um produo.
-- Uma página para editar um produto.
-- Implementar a remoção de um produto.
-- Uma página de Login do usuário.
-- As páginas devem ser acessíveis através de rotas definidas na primeira etapa.
+#### Login
+```
+POST /api/login
+Content-Type: application/json
 
-Na **primeira rota**, cada linha da tabela deverá conter uma coluna "Ações".
-Dentro desta coluna, deverá haver um botão com um link para a **página de detalhes do produto**, onde serão exibidos todos os dados daquele produto.
+{
+    "email": "john@example.com",
+    "password": "password123"
+}
+```
 
-___
-## **O que vamos avaliar:**
+**Response:**
+```json
+{
+    "message": "Login successful",
+    "user": {
+        "id": 1,
+        "name": "John Doe",
+        "email": "john@example.com"
+    },
+    "access_token": "1|token...",
+    "token_type": "Bearer"
+}
+```
 
-- Desempenho;
-- Manutenibilidade;
-- Organização e clareza do código;
-- Conhecimento ferramental;
-- Aplicação de boas práticas.
+#### Logout
+```
+POST /api/logout
+Authorization: Bearer {token}
+```
 
-___
-## **Para finalizar...**
-Se liga nessas informações importantes para o início e conclusão do desafio:
+### Products
 
-- Crie um **fork** e desenvolva a sua solução nele.
-- Crie um **PROJECT.md** com a explicação de como devemos executar o projeto e o máximo de detalhes possível sobre o que foi feito e como foi feito (bibliotecas utilizadas, o porquê de utilizá-las, etc).
-- Após concluir todas as tarefas, faça um **pull request**.
-- Envie um E-mail para "**alexander@aldesenvolvimento.com.br**" com o link do seu **pull request** e com o assunto "**Challenge Accepted**".
+#### List All Products (Public)
+```
+GET /api/products
+```
 
-Caso tenha alguma dívida, entre em contato conosco também através do E-mail "**alexander@aldesenvolvimento.com.br**".
-___
-### **Bom... Por enquanto é só isso tudo.**
+**Response:**
+```json
+[
+    {
+        "id": 1,
+        "name": "Playstation 5",
+        "description": "Play PS5 and PS4 games on Blu-ray Disc...",
+        "price": 3550,
+        "quantity": 100,
+        "active": true
+    }
+]
+```
 
-Um excelente desafio! o/
-#### **VAMBORA PRA CIMA!**
+#### View Product (Public)
+```
+GET /api/products/{id}
+```
+
+#### Create Product (Authenticated)
+```
+POST /api/products
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+    "name": "New Product",
+    "description": "Product description",
+    "price": 99.99,
+    "quantity": 50,
+    "active": true
+}
+```
+
+**Validations:**
+- `name`: required, string, max 255 characters
+- `description`: optional, string
+- `price`: required, numeric, greater than 0
+- `quantity`: required, integer, minimum 0
+- `active`: optional, boolean (default: true)
+
+#### Update Product (Authenticated)
+```
+PUT /api/products/{id}
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+    "name": "Updated Product",
+    "price": 199.99,
+    "quantity": 75
+}
+```
+
+#### Delete Product (Authenticated)
+```
+DELETE /api/products/{id}
+Authorization: Bearer {token}
+```
+
+## Tests
+
+Run unit tests with:
+
+```bash
+php artisan test
+```
+
+or
+
+```bash
+./vendor/bin/phpunit
+```
+
+Tests cover:
+- Product listing (public)
+- Product viewing (public)
+- Product creation (authenticated)
+- Product update (authenticated)
+- Product deletion (authenticated)
+- Data validations
+- Error handling (404, 401, 422)
+
+## Implemented Features
+
+### ✅ First Stage - API (Backend)
+
+1. **Initial Configuration**
+   - ✅ Laravel project configured
+   - ✅ .env.example file created
+   - ✅ Application key configurable
+
+2. **Model and Migration**
+   - ✅ `Product` model created
+   - ✅ Migration with fields: id, name, description, price, quantity, active
+   - ✅ `products` table created
+
+3. **Seeders and Factories**
+   - ✅ Factory for `Product` created
+   - ✅ `ProductSeeder` created
+   - ✅ Fictional data including PlayStation 5 example
+
+4. **Routes and Controllers**
+   - ✅ RESTful routes implemented
+   - ✅ `ProductController` with methods: index, show, store, update, destroy
+   - ✅ Validations implemented:
+     - name: required
+     - price: required, greater than 0
+     - quantity: required, integer
+
+5. **Authentication and Authorization**
+   - ✅ Authentication via Laravel Sanctum
+   - ✅ Protected routes for creation, update, and deletion
+   - ✅ Public routes for listing and viewing
+
+6. **Unit Tests**
+   - ✅ Tests for `ProductController`
+   - ✅ Success and failure tests
+   - ✅ Validation and authentication coverage
+
+## JSON Response Structure
+
+All API responses follow the format:
+
+```json
+{
+    "id": 1,
+    "name": "Playstation 5",
+    "description": "Play PS5 and PS4 games on Blu-ray Disc...",
+    "price": 3550,
+    "quantity": 100,
+    "active": true
+}
+```
+
+## Security
+
+- Authentication via tokens (Laravel Sanctum)
+- Input data validation
+- CSRF protection for web routes
+- Passwords hashed with bcrypt
+- Authentication middleware on protected routes
+
+## Next Steps (Frontend)
+
+The second stage of the challenge consists of creating a ReactJS SPA to consume this API, including:
+- Product listing page
+- Product details page
+- Product creation page
+- Product editing page
+- Deletion functionality
+- Login page
+
+## Author
+
+Developed as part of the fullstack challenge.
+
+## License
+
+MIT
+
