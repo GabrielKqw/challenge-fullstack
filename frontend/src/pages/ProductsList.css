@@ -1,0 +1,166 @@
+.products-list {
+  width: 100%;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.page-header h1 {
+  color: #2c3e50;
+  font-size: 2rem;
+}
+
+.btn-primary {
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #229954;
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.error {
+  color: #e74c3c;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table-container {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+}
+
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.products-table thead {
+  background-color: #f8f9fa;
+}
+
+.products-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #2c3e50;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.products-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.products-table tbody tr {
+  transition: background-color 0.2s;
+}
+
+.products-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.status.active {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status.inactive {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.actions-cell {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-view,
+.btn-edit,
+.btn-delete {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-view {
+  background-color: #3498db;
+  color: white;
+}
+
+.btn-view:hover {
+  opacity: 0.8;
+}
+
+.btn-edit {
+  background-color: #f39c12;
+  color: white;
+}
+
+.btn-edit:hover {
+  opacity: 0.8;
+}
+
+.btn-delete {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btn-delete:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .table-container {
+    overflow-x: scroll;
+  }
+
+  .actions-cell {
+    flex-direction: column;
+  }
+}
+

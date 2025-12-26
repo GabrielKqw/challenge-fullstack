@@ -23,7 +23,7 @@ This project is a RESTful API developed in Laravel 10 for product management, wi
 
 ```
 challenge-fullstack/
-├── app/
+├── app/                                # Laravel application
 │   ├── Http/
 │   │   ├── Controllers/
 │   │   │   ├── AuthController.php      # Authentication controller
@@ -40,6 +40,14 @@ challenge-fullstack/
 │   └── seeders/
 │       ├── DatabaseSeeder.php         # Main seeder
 │       └── ProductSeeder.php         # Products seeder
+├── frontend/                           # ReactJS SPA
+│   ├── src/
+│   │   ├── components/                # React components
+│   │   ├── contexts/                   # React contexts
+│   │   ├── pages/                      # Page components
+│   │   └── services/                   # API services
+│   ├── package.json
+│   └── vite.config.js
 ├── routes/
 │   ├── api.php                        # API routes
 │   └── web.php                        # Web routes
@@ -58,7 +66,7 @@ challenge-fullstack/
 - MySQL 5.7+ or MariaDB 10.3+
 - Required PHP extensions: PDO, OpenSSL, Mbstring, Tokenizer, XML, Ctype, JSON, BCMath, pdo_mysql
 
-> **⚠️ IMPORTANT:** If you get an error about `vendor/autoload.php` not found, it means Composer is not installed. See installation instructions.
+> **IMPORTANT:** If you get an error about `vendor/autoload.php` not found, it means Composer is not installed. See installation instructions.
 
 ### Installation
 
@@ -277,40 +285,40 @@ Tests cover:
 
 ## Implemented Features
 
-### ✅ First Stage - API (Backend)
+### First Stage - API (Backend)
 
 1. **Initial Configuration**
-   - ✅ Laravel project configured
-   - ✅ .env.example file created
-   - ✅ Application key configurable
+   - Laravel project configured
+   - .env.example file created
+   - Application key configurable
 
 2. **Model and Migration**
-   - ✅ `Product` model created
-   - ✅ Migration with fields: id, name, description, price, quantity, active
-   - ✅ `products` table created
+   - `Product` model created
+   - Migration with fields: id, name, description, price, quantity, active
+   - `products` table created
 
 3. **Seeders and Factories**
-   - ✅ Factory for `Product` created
-   - ✅ `ProductSeeder` created
-   - ✅ Fictional data including PlayStation 5 example
+   - Factory for `Product` created
+   - `ProductSeeder` created
+   - Fictional data including PlayStation 5 example
 
 4. **Routes and Controllers**
-   - ✅ RESTful routes implemented
-   - ✅ `ProductController` with methods: index, show, store, update, destroy
-   - ✅ Validations implemented:
+   - RESTful routes implemented
+   - `ProductController` with methods: index, show, store, update, destroy
+   - Validations implemented:
      - name: required
      - price: required, greater than 0
      - quantity: required, integer
 
 5. **Authentication and Authorization**
-   - ✅ Authentication via Laravel Sanctum
-   - ✅ Protected routes for creation, update, and deletion
-   - ✅ Public routes for listing and viewing
+   - Authentication via Laravel Sanctum
+   - Protected routes for creation, update, and deletion
+   - Public routes for listing and viewing
 
 6. **Unit Tests**
-   - ✅ Tests for `ProductController`
-   - ✅ Success and failure tests
-   - ✅ Validation and authentication coverage
+   - Tests for `ProductController`
+   - Success and failure tests
+   - Validation and authentication coverage
 
 ## JSON Response Structure
 
@@ -335,15 +343,58 @@ All API responses follow the format:
 - Passwords hashed with bcrypt
 - Authentication middleware on protected routes
 
-## Next Steps (Frontend)
+## Frontend (ReactJS SPA)
 
-The second stage of the challenge consists of creating a ReactJS SPA to consume this API, including:
-- Product listing page
+The frontend is located in the `frontend/` directory and is a complete ReactJS SPA that consumes the API.
+
+### Frontend Installation
+
+```bash
+cd frontend
+npm install
+```
+
+### Running the Frontend
+
+```bash
+npm run dev
+```
+
+The frontend will be available at `http://localhost:3000`
+
+### Frontend Features
+
+- User authentication (Login page)
+- Products listing page with actions column
 - Product details page
 - Product creation page
 - Product editing page
-- Deletion functionality
-- Login page
+- Product deletion functionality
+- Protected routes (authentication required)
+- Responsive design
+
+### Frontend Technologies
+
+- **React 18**: UI library
+- **React Router DOM 6**: Client-side routing
+- **Axios**: HTTP client for API requests
+- **Vite**: Build tool and development server
+
+See `frontend/README.md` for more details.
+
+### Login Credentials
+
+After running the seeders, you can use the following credentials to login:
+
+**Option 1: Admin User**
+- Email: `admin@test.com`
+- Password: `password123`
+
+**Option 2: Test User**
+- Email: `test@test.com`
+- Password: `password123`
+
+You can also create new users through the registration page at `/register` or via the API endpoint `/api/register`.
 
 ## Author
 
